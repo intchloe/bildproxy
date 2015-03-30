@@ -13,9 +13,6 @@ Du bör dessutom lägga till detta i din fstab(/etc/fstab):
 `tmpfs       /var/www/uploads tmpfs   nodev,nosuid,noexec,nodiratime,size=10M   0 0`
 
 Det du behöver är:
-node
-secure-delete
-tor och proxychains 
-ExifTool
-
 `sudo apt-get install libimage-exiftool-perl tor proxychains secure-delete`
+
+Du behöver node för npm och imgbi-client. Följ denna guide för att fixa node: http://howtonode.org/how-to-install-nodejs - sedan installerar du imgbi-client med `npm install imgbi -g`
