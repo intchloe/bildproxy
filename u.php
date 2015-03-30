@@ -29,9 +29,14 @@ if ($uploadOk == 0) {
 
     if (move_uploaded_file($_FILES["i"]["tmp_name"], $target_file)) {
 
-        rename($target_file, "uploads/0.jpg"); //döper om filen för jag litar inte på dig
-        shell_exec('exiftool -all="" -overwrite_original_in_place uploads/*'); //ta bort alla EXIF på alla filer i uploads-mappen. Dessutom vill vi inte ha en kopia.
-        $img = "proxychains imgbi-client -i uploads/0.jpg | sed 's/ProxyChains.*//g'"; //ladda upp bilden till img.bi över Tor, ta också bort Proxychains's output
+        //döper om filen för jag litar inte på dig
+        rename($target_file, "uploads/0.jpg"); 
+
+        //ta bort alla EXIF på alla filer i uploads-mappen. Dessutom vill vi inte ha en kopia.
+        shell_exec('exiftool -all="" -overwrite_original_in_place "' . $target_dir .'" *');
+
+        //ladda upp bilden till img.bi över Tor, ta också bort Proxychains's output
+        $img = "proxychains imgbi-client -i '" . $target_dir . "'/0.jpg | sed 's/ProxyChains.*//g'";
 
         echo '<pre>';
         passthru($img);
@@ -39,6 +44,7 @@ if ($uploadOk == 0) {
 
         //Skriv över allting i uploads-mappen, just in case
         shell_exec('find "' . $target_dir . '" -type f -name "*" -exec srm -ll -z {} \;');
+
         
     } else {
         echo "error";
