@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://img.chloe.website/a.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Proxy bildhost!</title>
+</head><body>
+
+<style type="text/css">
+body {
+background-color: #F9F7F5;
+}
+.hack {
+   padding-right: 20%;
+   padding-left: 20%;
+   font-family: Courier;
+   font-size:8pt;
+   font-weight: bold;
+}
+</style>
+<center>
+<h1>"API"</h1>
+<div class="hack">
+<b><u>Hämta bara visningslänk</u>:</b> curl -s -F "i=@picture.jpg" http://img.chloe.website/u.php | sed -n '2p'
+<br>
+<b><u>Hämta visnings-och borttagningslänken</u>:</b> curl -s -F "i=@picture.jpg" http://img.chloe.website/u.php | sed -n '2,$
+<br><br>
+<b><u>Lägg till följande i in ~/.bashrc för att kunna ladda upp med ett kommando, ex.:</u></b> <i>img fil.jpg</i>
+<br><br>
+img() { <br>
+curl -s -F "i=@$1" http://img.chloe.website/u.php | sed -n '2p' <br>
+}
+<br><br>
+</div>
+<h1>WHY?</h1>
+<div class="hack">
+För att img.bi är en jättebra tjänst som fler bör använda. Tyvärr erbjuder deras API inte att man postar data direkt till deras server då bilden behöver krypteras först. 
+<br>Detta är en lösning på problemet och som dessutom gör allting säkrare och mer integritetsvänligt. 
+</div>
+<br><br>
+<h1>HOW?</h1>
+<div class="hack">
+När du postar en bild till denna server då läggs den på en tmpfs-partition. Detta betyder att den aldrig sparas på hårddisken utan den läggs i minnet. När den väl är framme så tas all EXIF-data bort och den får sedan ett nytt namn. <br>
+Sedan krypterar imgbis's API bilden lokalt för att sedan posta bilden genom Tor till img.bi. Sedan tas bilden bort ifrån minnet genom att skriva över hela partitionen med nollor en gång.
+</div>
+<br><br>
+<h1>WHO?</h1>
+<div class="hack">
+<a href="https://keybase.io/dotchloe"> dotchloe </a>
+</div>
+</center>
+
+
+</body></html>
