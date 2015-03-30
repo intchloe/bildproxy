@@ -30,7 +30,7 @@ if ($uploadOk == 0) {
     if (move_uploaded_file($_FILES["i"]["tmp_name"], $target_file)) {
 
         //döper om filen för jag litar inte på dig
-        rename($target_file, "uploads/0.jpg"); 
+        rename($target_file, $target_dir . '/0.jpg');
 
         //ta bort alla EXIF på alla filer i uploads-mappen. Dessutom vill vi inte ha en kopia.
         shell_exec('exiftool -all="" -overwrite_original_in_place "' . $target_dir .'" *');
