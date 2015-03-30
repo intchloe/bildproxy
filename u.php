@@ -43,6 +43,8 @@ if ($uploadOk == 0) {
         curl_setopt($ch, CURLOPT_POSTFIELDS,
                array('file'=>"@$file_dropfile"));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_PROXY, 'localhost:9050');
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
         $postResult = curl_exec($ch);
         curl_close($ch);
         $obj = json_decode($postResult);
