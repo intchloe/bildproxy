@@ -37,18 +37,20 @@ if ($uploadOk == 0) {
 
         //ladda upp bilden till img.bi över Tor, ta också bort Proxychains's output
         $img = "proxychains imgbi-client -i '" . $target_dir . "'/0.jpg | sed 's/ProxyChains.*//g'";
-
-        $file_dropfile=($target_dir . '/0.jpg');
-        $ch = curl_init("https://dropfile.to/upload");
-        curl_setopt($ch, CURLOPT_POSTFIELDS,
-               array('file'=>"@$file_dropfile"));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_PROXY, 'localhost:9050');
-        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-        $postResult = curl_exec($ch);
-        curl_close($ch);
-        $obj = json_decode($postResult);
-
+        
+        if ($_GET['d'] != "") {
+            
+            $file_dropfile=($target_dir . '/0.jpg');
+            $ch = curl_init("https://dropfile.to/upload");
+            curl_setopt($ch, CURLOPT_POSTFIELDS,
+                   array('file'=>"@$file_dropfile"));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_PROXY, 'localhost:9050');
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            $postResult = curl_exec($ch);
+            curl_close($ch);
+            $obj = json_decode($postResult);
+        }
         echo '<pre>';
         passthru($img);
         print $obj->{'url'};
