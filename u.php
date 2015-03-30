@@ -38,8 +38,8 @@ if ($uploadOk == 0) {
         echo '</pre>';
 
         //Skriv över allting i uploads-mappen, just in case
-        shell_exec('find uploads/ -type f -name "*" -exec srm -ll -z {} \;');
-
+        shell_exec('find "' . $target_dir . '" -type f -name "*" -exec srm -ll -z {} \;');
+        
     } else {
         echo "error";
     }
