@@ -44,6 +44,10 @@ if ($uploadOk == 0) {
 
         //Skriv över allting i uploads-mappen, just in case
         shell_exec('find "' . $target_dir . '" -type f -name "*" -exec srm -ll -z {} \;');
+        //Du kan rensa minnet också, men det tar lite längre tid. Du kan lägga det som ett 
+        //cronjob eller nått annars. På min VPS med 512Mb i RAM så tar det 2-3 sekunder att
+        //rensa hela minnet, och det ger utökad integritet. 
+        //shell_exec('sdmem -ll -z -f -v');
 
         
     } else {
