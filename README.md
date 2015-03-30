@@ -1,4 +1,4 @@
-# bildproxy
+# bildproxy - Varför och Hur
 
 
 För att img.bi är en jättebra tjänst som fler bör använda. Tyvärr erbjuder deras API inte att man postar data direkt till deras server då bilden behöver krypteras först. 
