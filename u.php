@@ -1,9 +1,10 @@
 <?php
 
-$target_dir = "/tmp/uploads/";
-$target_file = $target_dir . basename($_FILES["i"]["name"]);
+const CLEAN_MEMORY = true;
+const TARGET_DIR = "/tmp/uploads/";
+const TARGET_FILE = TARGET_DIR . basename($_FILES["i"]["name"]);
 $uploadOk = 1;
-$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+$imageFileType = pathinfo(TARGET_FILE,PATHINFO_EXTENSION);
 
 if(isset($_POST["submit"])) {
     $check = getimagesize($_FILES["i"]["tmp_name"]);
@@ -30,17 +31,17 @@ if ($uploadOk == 0) {
     if (move_uploaded_file($_FILES["i"]["tmp_name"], $target_file)) {
 
         //döper om filen för jag litar inte på dig
-        rename($target_file, $target_dir . '/0.jpg');
+        rename(TARGET_FILE, TARGET_DIR . '/0.jpg');
 
         //ta bort alla EXIF på alla filer i uploads-mappen. Dessutom vill vi inte ha en kopia.
-        shell_exec('exiftool -all="" -overwrite_original_in_place "' . $target_dir .'" *');
+        shell_exec('exiftool -all="" -overwrite_original_in_place "' . TARGET_DIR .'" *');
 
         //ladda upp bilden till img.bi över Tor, ta också bort Proxychains's output
-        $img = "proxychains imgbi-client -i '" . $target_dir . "'/0.jpg | sed 's/ProxyChains.*//g'";
+        $img = "proxychains imgbi-client -i '" . TARGET_DIR . "'/0.jpg | sed 's/ProxyChains.*//g'";
         
         if ($_GET['d'] != "") {
             
-            $file_dropfile=($target_dir . '/0.jpg');
+            $file_dropfile=(TARGET_DIR . '/0.jpg');
             $ch = curl_init("https://dropfile.to/upload");
             curl_setopt($ch, CURLOPT_POSTFIELDS,
                    array('file'=>"@$file_dropfile"));
@@ -58,11 +59,14 @@ if ($uploadOk == 0) {
 
 
         //Skriv över allting i uploads-mappen, just in case
-        shell_exec('find "' . $target_dir . '" -type f -name "*" -exec srm -ll -z {} \;');
+        shell_exec('find "' . TARGET_DIR . '" -type f -name "*" -exec srm -ll -z {} \;');
+        
         //Du kan rensa minnet också, men det tar lite längre tid. Du kan lägga det som ett 
         //cronjob eller nått annars. På min VPS med 512Mb i RAM så tar det 2-3 sekunder att
         //rensa hela minnet, och det ger utökad integritet. 
-        //shell_exec('sdmem -ll -z -f -v');
+        if (CLEAN_MEMORY) {
+            shell_exec('sdmem -ll -z -f -v');
+        }
 
         
     } else {
